@@ -1,0 +1,95 @@
+# ========================================
+# Syllabus Checker API - Python 3.13 Compatible Requirements
+# Optimized for Python 3.13 compatibility
+# ========================================
+
+# ============ Core FastAPI Framework ============
+fastapi>=0.104.1
+uvicorn[standard]>=0.35.0
+python-multipart>=0.0.20
+starlette>=0.27.0
+
+# ============ Data Processing & File Handling ============
+# Using newer pandas version that supports Python 3.13
+pandas>=2.2.0
+numpy>=1.26.4
+openpyxl>=3.1.5
+xlrd>=2.0.1
+
+# ============ Machine Learning & Embeddings ============
+sentence-transformers>=4.1.0
+torch>=2.6.0
+transformers>=4.51.3
+huggingface-hub>=0.30.2
+safetensors>=0.5.3
+tokenizers>=0.21.1
+
+# ============ LLM Integration ============
+langchain>=0.3.27
+langchain-community>=0.3.27
+langchain-core>=0.3.74
+langchain-google-genai>=2.1.4
+langchain-groq>=0.3.7
+langchain-openai>=0.3.30
+openai>=1.99.9
+groq>=0.31.0
+google-genai>=1.16.1
+
+# ============ Web & HTTP ============
+requests>=2.32.4
+httpx>=0.28.1
+aiohttp>=3.11.16
+aiofiles>=23.2.1
+
+# ============ Data Validation & Serialization ============
+pydantic>=2.11.7
+pydantic-core>=2.33.2
+pydantic-settings>=2.10.1
+
+# ============ Utility Libraries ============
+python-dotenv>=1.0.0
+python-dateutil>=2.9.0.post0
+typing-extensions>=4.14.1
+
+# ============ Scientific Computing ============
+scipy>=1.15.2
+scikit-learn>=1.6.1
+
+# ============ Authentication & Security ============
+cryptography>=45.0.5
+PyJWT>=2.8.0
+passlib[bcrypt]>=1.7.4
+
+# ============ Database & Storage ============
+sqlalchemy>=2.0.23
+alembic>=1.16.4
+# Note: Use psycopg2-binary for development, psycopg2 for production
+psycopg2-binary>=2.9.9
+
+# ============ File Format Support ============
+python-docx>=1.2.0
+pypdf>=5.8.0
+# Note: python-magic might not be available on all systems
+# python-magic>=0.4.27
+# python-magic-bin>=0.4.14
+
+# ============ Development & Testing ============
+pytest>=7.4.3
+pytest-asyncio>=0.21.1
+
+# ============ Async & Concurrency ============
+anyio>=4.10.0
+
+# ============ Web Scraping & Data Extraction ============
+beautifulsoup4>=4.12.2
+lxml>=4.9.3
+
+# ============ Configuration & Environment ============
+python-decouple>=3.8
+
+# ============ Logging & Monitoring ============
+structlog>=24.4.0
+
+# ============ Additional ML Libraries ============
+joblib>=1.4.2
+tqdm>=4.67.1
