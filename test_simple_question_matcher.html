@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Question Matcher Tester</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            padding: 30px;
+        }
+
+        .input-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            border: 2px solid #e9ecef;
+            transition: border-color 0.3s ease;
+        }
+
+        .input-group:hover {
+            border-color: #667eea;
+        }
+
+        .input-group h3 {
+            color: #495057;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e9ecef;
+            font-size: 1.3em;
+        }
+
+        .input-info {
+            background: #e3f2fd;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid #2196f3;
+            font-size: 14px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 15px;
+            border: 2px solid #dee2e6;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            resize: vertical;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .controls {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .control-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .control-item label {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        input, select {
+            padding: 10px 15px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+            min-width: 150px;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #e9ecef;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .results {
+            display: none;
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #6c757d;
+            font-size: 0.9em;
+        }
+
+        .matches-section h4 {
+            color: #495057;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+
+        .match-item {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid #667eea;
+        }
+
+        .match-user {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 12px;
+            font-size: 1.1em;
+        }
+
+        .match-master {
+            color: #e74c3c;
+            margin-bottom: 12px;
+            font-style: italic;
+        }
+
+        .match-score {
+            display: inline-block;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        .error {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+
+        .no-matches {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+        }
+
+        .no-matches h4 {
+            color: #495057;
+            margin-bottom: 15px;
+        }
+
+        .api-status {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .api-status.connected {
+            background: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
+        }
+
+        .api-status.disconnected {
+            background: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+
+        @media (max-width: 768px) {
+            .input-section {
+                grid-template-columns: 1fr;
+            }
+            
+            .controls {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧠 Simple Question Matcher Tester</h1>
+            <p>Test the API with your own questions using open-source embeddings</p>
+        </div>
+
+        <div class="main-content">
+            <div id="apiStatus" class="api-status">
+                🔄 Checking API connection...
+            </div>
+
+            <div class="input-section">
+                <div class="input-group">
+                    <h3>📚 Master Questions</h3>
+                    <div class="input-info">
+                        <strong>Reference questions to match against</strong><br>
+                        Enter one question per line
+                    </div>
+                    <textarea id="masterQuestions" placeholder="What is machine learning?
+How does artificial intelligence work?
+What are neural networks?
+Explain deep learning concepts
+What is natural language processing?
+How do you train a model?
+What is supervised learning?
+What is unsupervised learning?"></textarea>
+                </div>
+
+                <div class="input-group">
+                    <h3>❓ User Questions</h3>
+                    <div class="input-info">
+                        <strong>Questions you want to find matches for</strong><br>
+                        Enter one question per line
+                    </div>
+                    <textarea id="userQuestions" placeholder="Can you explain AI?
+What are the basics of ML?
+How do computers understand language?
+Tell me about deep neural networks
+How to build machine learning models?
+What's supervised vs unsupervised learning?"></textarea>
+                </div>
+            </div>
+
+            <div class="controls">
+                <div class="control-item">
+                    <label for="threshold">Similarity Threshold</label>
+                    <input type="number" id="threshold" min="0" max="1" step="0.01" value="0.70">
+                </div>
+
+                <div class="control-item">
+                    <label for="model">Embedding Model</label>
+                    <select id="model">
+                        <option value="bge-large-en">BGE Large EN (Best)</option>
+                        <option value="gte-large">GTE Large (Fast)</option>
+                        <option value="e5-large-v2">E5 Large v2 (Reliable)</option>
+                        <option value="bge-m3">BGE M3 (Multilingual)</option>
+                    </select>
+                </div>
+
+                <div class="control-item">
+                    <label for="apiUrl">API URL</label>
+                    <input type="text" id="apiUrl" value="http://127.0.0.1:8001">
+                </div>
+
+                <button class="btn-primary" onclick="findMatches()">
+                    🔍 Find Matches
+                </button>
+            </div>
+
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <div><strong>Finding semantic matches...</strong></div>
+                <div>Using AI embeddings to analyze question similarity</div>
+            </div>
+
+            <div class="results" id="results"></div>
+        </div>
+    </div>
+
+    <script>
+        // Check API status on page load
+        window.addEventListener('load', checkApiStatus);
+
+        async function checkApiStatus() {
+            const statusDiv = document.getElementById('apiStatus');
+            const apiUrl = document.getElementById('apiUrl').value;
+            
+            try {
+                const response = await fetch(`${apiUrl}/health`, { 
+                    method: 'GET',
+                    timeout: 5000 
+                });
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    statusDiv.className = 'api-status connected';
+                    statusDiv.innerHTML = `✅ API Connected - Status: ${data.status}`;
+                } else {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+            } catch (error) {
+                statusDiv.className = 'api-status disconnected';
+                statusDiv.innerHTML = `❌ API Disconnected - Make sure the server is running on ${apiUrl}`;
+            }
+        }
+
+        async function findMatches() {
+            const masterText = document.getElementById('masterQuestions').value.trim();
+            const userText = document.getElementById('userQuestions').value.trim();
+            const threshold = parseFloat(document.getElementById('threshold').value);
+            const model = document.getElementById('model').value;
+            const apiUrl = document.getElementById('apiUrl').value;
+            
+            // Validate inputs
+            if (!masterText) {
+                alert('Please enter master questions');
+                return;
+            }
+            
+            if (!userText) {
+                alert('Please enter user questions');
+                return;
+            }
+            
+            // Parse questions
+            const masterQuestions = masterText.split('\n').filter(line => line.trim());
+            const userQuestions = userText.split('\n').filter(line => line.trim());
+            
+            if (masterQuestions.length === 0) {
+                alert('Please enter at least one master question');
+                return;
+            }
+            
+            if (userQuestions.length === 0) {
+                alert('Please enter at least one user question');
+                return;
+            }
+            
+            // Show loading
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('results').style.display = 'none';
+            document.querySelector('.btn-primary').disabled = true;
+            
+            try {
+                const response = await fetch(`${apiUrl}/match-questions`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        master_questions: masterQuestions,
+                        user_questions: userQuestions,
+                        similarity_threshold: threshold,
+                        model_key: model
+                    })
+                });
+                
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.detail || `HTTP ${response.status}`);
+                }
+                
+                const data = await response.json();
+                displayResults(data);
+                
+            } catch (error) {
+                displayError(error.message);
+            } finally {
+                document.getElementById('loading').style.display = 'none';
+                document.querySelector('.btn-primary').disabled = false;
+            }
+        }
+        
+        function displayResults(data) {
+            const resultsDiv = document.getElementById('results');
+            
+            let html = `
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">${data.total_user_questions}</div>
+                        <div class="stat-label">User Questions</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${data.total_master_questions}</div>
+                        <div class="stat-label">Master Questions</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${data.total_matches}</div>
+                        <div class="stat-label">Matches Found</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">${data.match_percentage.toFixed(1)}%</div>
+                        <div class="stat-label">Match Rate</div>
+                    </div>
+                </div>
+            `;
+            
+            if (data.matches.length > 0) {
+                html += `
+                    <div class="matches-section">
+                        <h4>🎯 Matches Found (${data.matches.length})</h4>
+                `;
+                
+                data.matches.forEach((match, index) => {
+                    html += `
+                        <div class="match-item">
+                            <div class="match-user">
+                                <strong>User Question:</strong> "${match.user_question}"
+                            </div>
+                            <div class="match-master">
+                                <strong>📚 Best Match:</strong> "${match.matched_master_question}"
+                            </div>
+                            <div>
+                                <span class="match-score">
+                                    Similarity: ${(match.similarity_score * 100).toFixed(1)}%
+                                </span>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                html += '</div>';
+            } else {
+                html += `
+                    <div class="no-matches">
+                        <h4>🤔 No matches found</h4>
+                        <p>Try lowering the similarity threshold or rephrasing your questions.</p>
+                        <p>Current threshold: ${data.similarity_threshold}</p>
+                    </div>
+                `;
+            }
+            
+            resultsDiv.innerHTML = html;
+            resultsDiv.style.display = 'block';
+        }
+        
+        function displayError(message) {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = `
+                <div class="error">
+                    <h4>❌ Error</h4>
+                    <p><strong>Message:</strong> ${message}</p>
+                    <p><strong>Troubleshooting:</strong></p>
+                    <ul>
+                        <li>Make sure the API server is running</li>
+                        <li>Check the API URL is correct</li>
+                        <li>Verify your internet connection</li>
+                        <li>Try refreshing the page</li>
+                    </ul>
+                </div>
+            `;
+            resultsDiv.style.display = 'block';
+        }
+        
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 'Enter') {
+                findMatches();
+            }
+        });
+        
+        // Auto-check API status when URL changes
+        document.getElementById('apiUrl').addEventListener('change', checkApiStatus);
+        
+        // Auto-resize textareas
+        document.querySelectorAll('textarea').forEach(textarea => {
+            textarea.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = Math.max(200, this.scrollHeight) + 'px';
+            });
+        });
+    </script>
+</body>
+</html>
