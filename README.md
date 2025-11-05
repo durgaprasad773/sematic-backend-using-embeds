@@ -1,20 +1,36 @@
-# Syllabus Checker - Question Bank Processing Tool
+# Syllabus Checker API
 
-A comprehensive Python tool and FastAPI service for processing and cleaning question banks using semantic similarity and syllabus-based filtering.
+A FastAPI-based application for processing question banks with similarity checking and syllabus filtering using semantic embeddings.
 
-## 🚀 Available Interfaces
+## 🚀 Quick Start
 
-### 1. **FastAPI REST Service** (Recommended)
-Complete REST API with 4 endpoints for web-based processing:
-- Health checking for LLM and embeddings
-- Similarity-only checking
-- Complete syllabus checking (text input)
-- Complete syllabus checking (file input)
+### 1. Install Dependencies
+```bash
+pip install -r requirements.txt
+```
 
-### 2. **Python Library**
-Direct Python integration for custom applications and batch processing.
+### 2. Set Environment Variables
+Create a `.env` file or set environment variables:
+```bash
+GROQ_API_KEY=your_groq_api_key_here
+OPEN_AI_API_KEY=your_openai_key_here  # Optional
+GOOGLE_API_KEY=your_google_key_here   # Optional
+```
 
-## Features
+### 3. Run the Server
+```bash
+python main.py
+```
+
+The server will start on `http://localhost:8000`
+
+## 📍 Access Points
+
+- **Web UI**: http://localhost:8000/question_matcher.html
+- **API Documentation**: http://localhost:8000/docs
+- **Health Check**: http://localhost:8000/health
+
+## ✨ Features
 
 ### Two-Phase Processing Pipeline:
 1. **Phase 1**: Remove questions similar to master questions (duplicate removal)
@@ -30,24 +46,23 @@ Direct Python integration for custom applications and batch processing.
 - ✅ Support multiple input formats (Excel, text files, direct text)
 - ✅ Configurable similarity and relevance thresholds
 - ✅ Detailed processing statistics and removed questions tracking
-- ✅ **Unique file naming** with 10-digit identifiers
-- ✅ **Automatic cleanup** of processed files
 - ✅ **Automatic model downloading** - no manual model setup required
-- ✅ **Git-friendly** - embedding models excluded from repository
 
-## Installation
+## 🛠️ Project Structure
 
-```bash
-# Install all dependencies
-pip install -r requirements.txt
 ```
-
-## 🤖 Embedding Models
-
-### Automatic Model Management
-The system automatically downloads and manages embedding models:
-
-- **First Run**: Models are downloaded automatically when the server starts
+syllabuscheck/
+├── main.py              # Application entry point
+├── main_api.py          # FastAPI application
+├── embeddings.py        # Embedding generation and question matching
+├── similarity.py        # Question similarity checking
+├── syllabus_check.py    # Syllabus-based filtering
+├── properties.py        # Configuration and API keys
+├── config.py           # Application configuration
+├── requirements.txt    # Python dependencies
+├── question_matcher.html # Web UI
+└── data_process/       # Temporary file processing directory
+```
 - **No Manual Setup**: Models download seamlessly in the background
 - **Offline Ready**: Once downloaded, models work offline
 - **Git Safe**: Models are excluded from git repository (added to .gitignore)

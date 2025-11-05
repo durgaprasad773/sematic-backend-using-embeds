@@ -119,3 +119,18 @@ Thumbs.db
 .env
 config.ini
 secrets.json
+
+# Application specific
+data_process/
+*.xlsx
+*.xls
+sample_*
+temp_*
+
+# Logs
+*.log
+logs/
+
+# Development
+.vscode/settings.json
+.pytest_cache/
