@@ -122,6 +122,7 @@ secrets.json
 
 # Application specific
 data_process/
+embeddingmodels/
 *.xlsx
 *.xls
 sample_*
